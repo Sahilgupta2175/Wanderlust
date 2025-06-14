@@ -5,6 +5,7 @@ const Listing = require("./models/listing");
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const wrapAsync = require('./utils/wrapAsync');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
 
@@ -48,17 +49,19 @@ app.get('/listings/:id', async (req, res) => {
 });
 
 // Create Route
-app.post('/listings', async (req, res) => {
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect('/listings');
-});
+app.post('/listings', 
+    wrapAsync(async (req, res) => {
+        const newListing = new Listing(req.body.listing);
+        await newListing.save();
+        res.redirect('/listings');
+    })
+);
 
 // Edit Route
 app.get('/listings/:id/edit', async (req, res) => {
     let id = req.params.id;
     const listing = await Listing.findById(id);
-    res.render('./listings/edit.ejs', {listing});
+    res.render('listings/edit.ejs', {listing});
 });
 
 // Update Route
@@ -90,6 +93,11 @@ app.delete('/listings/:id', async (req, res) => {
 
 //     res.send('Testing successful, sample listing created');
 // });
+
+app.use((err, req, res, next) => {
+    let {statusCode, message} = err;
+    res.status(statusCode).send(message);
+});
 
 app.listen(8080, () => {
     console.log('Server is running on port http://localhost:8080');
