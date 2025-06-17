@@ -7,7 +7,8 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require('./utils/expressError');
-const {listingSchema} = require('./schema.js');
+const {listingSchema} = require('./schema');
+const Review = require('./models/review');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
 
@@ -101,6 +102,21 @@ app.delete('/listings/:id',
         res.redirect('/listings');
     })
 );
+
+// Reviews Route => post route to add a review
+app.post('/listings/:id/reviews', async (req, res) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.reviews);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    // console.log('New review added successfully');
+    // res.send('New review added successfully');
+    res.redirect(`/listings/${listing._id}`);
+});
 
 // app.get('/testListing', async (req, res) => {
 //     let sampleListing = new Listing({
