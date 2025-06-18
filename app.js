@@ -7,7 +7,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require('./utils/expressError');
-const {listingSchema} = require('./schema');
+const {listingSchema, reviewSchema} = require('./schema');
 const Review = require('./models/review');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
@@ -25,6 +25,7 @@ async function main() {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -33,8 +34,21 @@ app.get('/', (req, res) => {
     res.send('Hello, I am root');
 });
 
+// Listing Schema Validation
 const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
+    if(error) {
+        let errMsg = error.details.map((el) => el.message).join(', ');
+        throw new ExpressError(400, errMsg);
+    }
+    else {
+        next();
+    }
+}
+
+// Review Schema Validation
+const validateReview = (req, res, next) => {
+    let {error} = reviewSchema.validate(req.body);
     if(error) {
         let errMsg = error.details.map((el) => el.message).join(', ');
         throw new ExpressError(400, errMsg);
@@ -104,19 +118,21 @@ app.delete('/listings/:id',
 );
 
 // Reviews Route => post route to add a review
-app.post('/listings/:id/reviews', async (req, res) => {
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.reviews);
+app.post('/listings/:id/reviews', validateReview,
+    wrapAsync(async (req, res) => {
+        let listing = await Listing.findById(req.params.id);
+        let newReview = new Review(req.body.review);
 
-    listing.reviews.push(newReview);
+        listing.reviews.push(newReview);
 
-    await newReview.save();
-    await listing.save();
+        await newReview.save();
+        await listing.save();
 
-    // console.log('New review added successfully');
-    // res.send('New review added successfully');
-    res.redirect(`/listings/${listing._id}`);
-});
+        // console.log('New review added successfully');
+        // res.send('New review added successfully');
+        res.redirect(`/listings/${listing._id}`);
+    })
+);
 
 // app.get('/testListing', async (req, res) => {
 //     let sampleListing = new Listing({
