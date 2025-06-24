@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const wrapAsync = require('../utils/wrapAsync');
-const {listingSchema, reviewSchema} = require('../schema');
-const expressError = require('../utils/expressError');
+const { listingSchema } = require('../schema');
+const ExpressError = require('../utils/expressError');
 const Listing = require('../models/listing');
 
 // Listing Schema Validation
