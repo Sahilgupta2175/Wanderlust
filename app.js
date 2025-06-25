@@ -7,6 +7,7 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/expressError');
 const listings = require('./routes/listing');
 const reviews = require('./routes/review');
+const session = require('express-session');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
 
@@ -27,6 +28,14 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+
+const sessionOptions = {
+    secret: 'mysupersecretcode',
+    resave: false,
+    saveUninitialized: true
+}
+
+app.use(session(sessionOptions));
 
 app.get('/', (req, res) => {
     res.send('Hello, I am root');
