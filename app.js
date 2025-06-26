@@ -37,7 +37,6 @@ const sessionOptions = {
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 1 week
         maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
-        // httpOnly: true, // Helps prevent XSS attacks
     }
 }
 
@@ -50,6 +49,7 @@ app.use(flash());
 
 app.use((req, res, next) => { 
     res.locals.success = req.flash('success');
+    // console.log(res.locals.success);
     next();
 });
 
