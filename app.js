@@ -8,6 +8,7 @@ const ExpressError = require('./utils/expressError');
 const listings = require('./routes/listing');
 const reviews = require('./routes/review');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
 
@@ -40,10 +41,16 @@ const sessionOptions = {
     }
 }
 
-app.use(session(sessionOptions));
-
 app.get('/', (req, res) => {
     res.send('Hello, I am root');
+});
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => { 
+    res.locals.success = req.flash('success');
+    next();
 });
 
 // Listings Route
