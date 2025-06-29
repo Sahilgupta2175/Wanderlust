@@ -5,13 +5,14 @@ const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/expressError');
-const listings = require('./routes/listing');
-const reviews = require('./routes/review');
+const listingsRouter = require('./routes/listing');
+const reviewsRouter = require('./routes/review');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const userRouter = require('./routes/user');
 
 const mongo_url = 'mongodb://localhost:27017/wanderlust';
 
@@ -76,10 +77,13 @@ app.get('/demo-user', async (req, res) => {
 });
 
 // Listings Route
-app.use('/listings', listings);
+app.use('/listings', listingsRouter);
 
 // Reviews Route
-app.use('/listings/:id/reviews', reviews);
+app.use('/listings/:id/reviews', reviewsRouter);
+
+// User Route
+app.use('/', userRouter);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, 'Page Not Found!'));
