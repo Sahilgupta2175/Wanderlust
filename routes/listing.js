@@ -36,19 +36,22 @@ router.get('/new-detail', isLoggedIn, (req, res) => {
 router.get('/:id', 
     wrapAsync(async (req, res) => {
         let id = req.params.id;
-        const listing = await Listing.findById(id).populate('reviews');
+        const listing = await Listing.findById(id).populate('reviews').populate('owner');
         if(!listing) {
             req.flash('error', 'Listing does not exist!');
             return res.redirect('/listings');
         }
+        console.log(listing);
         res.render('./listings/show.ejs', {listing});
     })
 );
 
 // Create Route
-router.post('', isLoggedIn, validateListing,
+router.post('/', isLoggedIn, validateListing,
     wrapAsync(async (req, res) => {
         const newListing = new Listing(req.body.listing);
+        // Set the owner to the current user
+        newListing.owner = req.user._id;
         await newListing.save();
         req.flash('success', 'New listing created successfully!');
         res.redirect('/listings');
