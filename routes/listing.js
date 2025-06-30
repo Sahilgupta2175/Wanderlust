@@ -50,6 +50,7 @@ router.get('/:id',
 router.post('/', isLoggedIn, validateListing,
     wrapAsync(async (req, res) => {
         const newListing = new Listing(req.body.listing);
+        // console.log(req.user);
         // Set the owner to the current user
         newListing.owner = req.user._id;
         await newListing.save();
