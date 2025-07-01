@@ -16,7 +16,6 @@ const showListingRoute = async (req, res) => {
         req.flash('error', 'Listing does not exist!');
         return res.redirect('/listings');
     }
-    console.log(listing);
     res.render('./listings/show.ejs', {listing});
 }
 
