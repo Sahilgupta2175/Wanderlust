@@ -12,7 +12,7 @@ router.route('/signup')
 
 router.route('/login')
     .get(renderLoginForm)
-    .post(saveRedirectUrl, passport.authenticate("locals", {failureRedirect: '/login', failureFlash: true}), loginRoute);
+    .post(saveRedirectUrl, passport.authenticate("local", {failureRedirect: '/login', failureFlash: true}), loginRoute);
 
 router.get('/logout', logoutRoute);
 
