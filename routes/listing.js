@@ -4,7 +4,8 @@ const wrapAsync = require('../utils/wrapAsync');
 const {validateListing, isLoggedIn, isOwner } = require('../middleware');
 const { indexRoute, renderNewFormRoute, showListingRoute, createListingRoute, editListingRoute, updateListingRoute, destroyListingRoute } = require('../controllers/listings');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const { storage } = require('../cloudConfig');
+const upload = multer({ storage });
 
 router.route("/")
     // Index Route
