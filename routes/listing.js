@@ -11,10 +11,7 @@ router.route("/")
     // Index Route
     .get(wrapAsync(indexRoute))
     // Create Route
-    // .post(isLoggedIn, validateListing, wrapAsync(createListingRoute));
-    .post((upload.single('listing[image]')), (req, res) => {
-       res.send(req.file); 
-    });
+    .post(isLoggedIn, validateListing, upload.single('listing[image]'), wrapAsync(createListingRoute));
 
 // New Route
 router.get('/new-detail', isLoggedIn, renderNewFormRoute);
