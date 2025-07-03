@@ -20,7 +20,7 @@ router.route('/:id')
     // Show Route
     .get(wrapAsync(showListingRoute))
     // Update Route
-    .put(isLoggedIn, isOwner, validateListing, wrapAsync(updateListingRoute))
+    .put(isLoggedIn, isOwner, upload.single('listing[image]'), validateListing, wrapAsync(updateListingRoute))
     // Delete Route
     .delete(isLoggedIn, isOwner, wrapAsync(destroyListingRoute));
 
