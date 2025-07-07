@@ -29,9 +29,6 @@ const createListingRoute = async (req, res) => {
         limit: 1
     }).send();
 
-    console.log(coordinate.body.features[0].geometry);
-    res.send("Done");
-
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
@@ -39,7 +36,9 @@ const createListingRoute = async (req, res) => {
     newListing.owner = req.user._id;
     // Set the image URL and filename
     newListing.image = { url, filename };
-    await newListing.save();
+    newListing.geometry = coordinate.body.features[0].geometry;
+    let savedListing = await newListing.save();
+    console.log(savedListing);
     req.flash('success', 'New listing created successfully!');
     res.redirect('/listings');
 };
