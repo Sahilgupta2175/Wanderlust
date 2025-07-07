@@ -1,6 +1,9 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
     container: 'map',
-    center: [79.4489, 25.9875],
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: coordinates,
     zoom: 9 
 });
+
+const marker = new mapboxgl.Marker({color: 'red'}).setLngLat(coordinates).addTo(map);
