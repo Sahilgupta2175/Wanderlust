@@ -37,6 +37,7 @@ const createListingRoute = async (req, res) => {
     // Set the image URL and filename
     newListing.image = { url, filename };
     newListing.geometry = coordinate.body.features[0].geometry;
+    newListing.category = req.body.listing.category;
     let savedListing = await newListing.save();
     console.log(savedListing);
     req.flash('success', 'New listing created successfully!');
