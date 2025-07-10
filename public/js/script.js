@@ -17,4 +17,14 @@
         form.classList.add('was-validated')
       }, false)
     })
-})()
+})();
+
+let taxSwitch = document.getElementById('flexSwitchCheckDefault');
+
+taxSwitch.addEventListener('click', () => {
+    let taxInfo = document.getElementsByClassName('tax-info');
+  
+    for(info of taxInfo) {
+        info.style.display = taxSwitch.checked ? 'inline' : 'none';
+    }
+});
