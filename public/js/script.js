@@ -28,3 +28,22 @@ taxSwitch.addEventListener('click', () => {
         info.style.display = taxSwitch.checked ? 'inline' : 'none';
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.search-input');
+    if (!searchInput) return;
+
+    const searchForm = searchInput.form;
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.trim() === '') window.location.href = '/listings';
+    });
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', e => {
+            if (searchInput.value.trim() === '') {
+                e.preventDefault();
+                window.location.href = '/listings';
+            }
+        });
+    }
+});
