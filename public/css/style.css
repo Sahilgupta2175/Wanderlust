@@ -158,3 +158,28 @@ body {
     display: flex;
     align-items: center;
 }
+
+/* Search Box */
+
+.search-btn {
+    background-color: #fe424d;
+    color: #ffffff;
+    border-radius: 25px;
+    padding: 0 1rem;
+}
+
+.search-btn:hover {
+    background-color: #fe424d;
+    color: #ffffff;
+}
+
+.search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+}
+
+.search-input {
+    border-radius: 25px;
+    padding: 0.5rem 3rem;
+    font-size: 1rem;
+}
