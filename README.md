@@ -34,41 +34,35 @@
 
 ---
 
-## 📸 Demo
-
-<div align="center">
-  <p><i>Add screenshots of your application's key pages/features here</i></p>
-  
-  ```
-  Home Page | Listing Page | User Dashboard
-  ```
-</div>
-
----
-
 ## ✨ Features
 
 ### User Authentication & Management
 - Secure signup and login with Passport.js
 - User profile management
-- Password reset functionality
+- Session-based authentication with secure cookies
 
 ### Property Listings
 - Create, edit, and delete property listings
 - Upload multiple images with Cloudinary integration
 - Detailed property descriptions and amenities
-- Location mapping with geospatial coordinates
+- **Real-time geocoding** with Mapbox API for accurate location mapping
+- **Interactive maps** displaying property locations with custom markers
+- **Category classification** (Villa, Apartment, House, Cabin, etc.)
+- Enhanced location data with city and state/region information
 
 ### Search & Discovery
-- Advanced search with multiple filters
-- Location-based property discovery
-- Price range filtering
-- Amenities-based filtering
+- **Real-time search functionality** across titles, locations, and categories
+- **Auto-refresh listings** when search is cleared (no page reload required)
+- **Intelligent search** that filters by partial matches using regex
+- **Category-based filtering** with predefined property types (Villa, Apartment, House, Cabin, etc.)
+- **Location-based property discovery** with geographic coordinates
+- **Instant search results** with seamless user experience
 
 ### Reviews & Ratings
 - Leave reviews and ratings for properties
+- **Permission-based review management** (only review authors can delete their reviews)
 - View property rating statistics
-- Host response system
+- Enhanced review validation and security
 
 ### UI/UX
 - Responsive design for all devices
@@ -103,7 +97,7 @@
 
 ### DevOps & Tools
 - **Version Control:** Git
-- **Deployment:** Heroku/Vercel
+- **Deployment:** Render
 - **Environment Variables:** dotenv
 - **Error Handling:** Custom middleware
 
@@ -268,8 +262,9 @@ The application follows the MVC (Model-View-Controller) architecture:
 
 ### Listings
 
-- `GET /listings` - Get all listings
-- `POST /listings` - Create new listing
+- `GET /listings` - Get all listings (supports search query parameter)
+- `GET /listings?search=query` - Search listings by title, location, or category
+- `POST /listings` - Create new listing (with automatic geocoding)
 - `GET /listings/:id` - Get specific listing
 - `PUT /listings/:id` - Update listing
 - `DELETE /listings/:id` - Delete listing
@@ -301,10 +296,11 @@ The application follows the MVC (Model-View-Controller) architecture:
   title: String,
   description: String,
   price: Number,
-  location: String,
+  location: String, // Enhanced with city and state/region
+  category: String, // Property type (Villa, Apartment, House, etc.)
   geometry: {
-    type: { type: String },
-    coordinates: [Number]
+    type: { type: String, default: "Point" },
+    coordinates: [Number] // [longitude, latitude] for precise mapping
   },
   images: [{ url: String, filename: String }],
   owner: { type: ObjectId, ref: 'User' },
