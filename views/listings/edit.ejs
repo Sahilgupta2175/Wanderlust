@@ -25,6 +25,24 @@
             </div>
             <div class="row">
                 <div class="mb-3 col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="listing[category]" class="form-select" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Arctic">Arctic</option>
+                        <option value="Boats">Boats</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Castles">Castles</option>
+                        <option value="Domes">Domes</option>
+                        <option value="Farms">Farms</option>
+                        <option value="Iconic cities">Iconic cities</option>
+                        <option value="Mountains">Mountains</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Trending">Trending</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a category</div>
+                </div>
+                <div class="mb-3 col-md-4">
                     <label for="price" class="form-label">Price</label>
                     <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" required>
                     <div class="invalid-feedback">Price should be valid</div>
