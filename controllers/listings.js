@@ -10,6 +10,7 @@ const indexRoute = async (req, res) => {
         $or: [
             { title: {$regex: search, $options: 'i'} },
             { location: {$regex: search, $options: 'i'} },
+            { country: {$regex: search, $options: 'i'} },
             { category: {$regex: search, $options: 'i'} }
         ]
     } : {};
